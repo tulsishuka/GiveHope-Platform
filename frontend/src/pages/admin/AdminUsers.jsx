@@ -8,7 +8,6 @@ const AdminUsers = () => {
   const [users, setUsers] = useState([]);
   const token = localStorage.getItem("token");
 
-  // 📦 FETCH USERS
   const fetchUsers = async () => {
     try {
       const res = await axios.get(
@@ -20,22 +19,16 @@ const AdminUsers = () => {
         }
       );
 
-      // ⚠️ IMPORTANT FIX
       setUsers(res.data.data);
     } catch (err) {
       console.error("Fetch users error:", err);
     }
   };
 
+  useEffect(() => {
+    fetchUsers();
+  }, []);
 
-
-
-
-useEffect(() => {
-  fetchUsers();
-}, []);
-
-  // 🗑 DELETE USER
   const deleteUser = async (id) => {
     try {
       await axios.delete(
@@ -55,7 +48,6 @@ useEffect(() => {
     }
   };
 
-  // ✏️ UPDATE USER STATUS
   const updateStatus = async (id, status) => {
     try {
       await axios.post(
@@ -77,14 +69,12 @@ useEffect(() => {
   };
 
   return (
-    <>
-    <div className="p-6 bg-gray-100 min-h-screen">
-
-      <h1 className="text-2xl font-bold mb-6">
+    <div className="p-4 sm:p-6 bg-gray-100 min-h-screen">
+      <h1 className="text-xl sm:text-2xl font-bold mb-6">
         👥 Admin Users Panel
       </h1>
 
-      <div className="overflow-x-auto bg-white rounded-xl shadow">
+      <div className="hidden md:block overflow-x-auto bg-white rounded-xl shadow">
 
         <table className="w-full text-sm">
 
@@ -101,48 +91,38 @@ useEffect(() => {
           </thead>
 
           <tbody>
-
             {users.map((u) => (
-              <tr key={u._id} className="border-b">
+              <tr key={u._id} className="border-b hover:bg-gray-50">
 
-                {/* NAME */}
-                <td className="p-3 font-semibold">
-                  {u.name}
-                </td>
-
-                {/* EMAIL */}
+                <td className="p-3 font-semibold">{u.name}</td>
                 <td>{u.email}</td>
 
-                {/* STATUS */}
                 <td>
-                  <span className={`px-2 py-1 rounded text-white text-xs ${
-                    u.subscriptionStatus === "active"
-                      ? "bg-green-500"
-                      : "bg-red-500"
-                  }`}>
+                  <span
+                    className={`px-2 py-1 rounded text-white text-xs ${
+                      u.subscriptionStatus === "active"
+                        ? "bg-green-500"
+                        : "bg-red-500"
+                    }`}
+                  >
                     {u.subscriptionStatus}
                   </span>
                 </td>
 
-                {/* PLAN */}
                 <td>{u.subscriptionPlan || "-"}</td>
 
-                {/* CHARITY */}
                 <td>
                   {u.selectedCharity?.name
                     ? u.selectedCharity.name
                     : "Not Selected"}
                 </td>
 
-                {/* DONATION */}
                 <td>{u.donationPercentage || 0}%</td>
 
-                {/* ACTIONS */}
                 <td className="flex gap-2 p-2">
 
-                  {/* CHANGE STATUS */}
                   <select
-                    className="border px-2 py-1"
+                    className="border px-2 py-1 rounded"
                     onChange={(e) =>
                       updateStatus(u._id, e.target.value)
                     }
@@ -152,10 +132,9 @@ useEffect(() => {
                     <option value="inactive">Inactive</option>
                   </select>
 
-                  {/* DELETE */}
                   <button
                     onClick={() => deleteUser(u._id)}
-                    className="bg-red-500 text-white px-3 py-1 rounded"
+                    className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
                   >
                     Delete
                   </button>
@@ -164,15 +143,78 @@ useEffect(() => {
 
               </tr>
             ))}
-
           </tbody>
 
         </table>
-       
+
       </div>
+      <div className="grid gap-4 md:hidden">
+
+        {users.map((u) => (
+          <div
+            key={u._id}
+            className="bg-white p-4 rounded-xl shadow border"
+          >
+
+            <div className="flex justify-between items-center">
+              <h2 className="font-bold text-lg">{u.name}</h2>
+
+              <span
+                className={`px-2 py-1 rounded text-xs text-white ${
+                  u.subscriptionStatus === "active"
+                    ? "bg-green-500"
+                    : "bg-red-500"
+                }`}
+              >
+                {u.subscriptionStatus}
+              </span>
+            </div>
+
+            <p className="text-gray-500 text-sm">{u.email}</p>
+
+            <div className="mt-2 text-sm space-y-1">
+              <p>
+                <b>Plan:</b> {u.subscriptionPlan || "-"}
+              </p>
+
+              <p>
+                <b>Charity:</b>{" "}
+                {u.selectedCharity?.name || "Not Selected"}
+              </p>
+
+              <p>
+                <b>Donation:</b> {u.donationPercentage || 0}%
+              </p>
+            </div>
+
+            <div className="mt-3 flex gap-2">
+
+              <select
+                className="border px-2 py-1 w-full rounded"
+                onChange={(e) =>
+                  updateStatus(u._id, e.target.value)
+                }
+              >
+                <option>Change Status</option>
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+              </select>
+
+              <button
+                onClick={() => deleteUser(u._id)}
+                className="bg-red-500 text-white px-3 py-1 rounded"
+              >
+                Delete
+              </button>
+
+            </div>
+
+          </div>
+        ))}
+
+      </div>
+
     </div>
-   
-    </>
   );
 };
 
