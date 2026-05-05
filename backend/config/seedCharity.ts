@@ -26,8 +26,7 @@ const data = [
 
 const seedDB = async () => {
   try {
-    await mongoose.connect("mongodb://localhost:27017/eccomerce");
-
+    await mongoose.connect(process.env.MONGO_URI!);
     await Charity.deleteMany();
     await Charity.insertMany(data);
 

@@ -23,3 +23,6 @@ export const verifyPayment = (data) =>
   API.post("/api/payment/verify", data);
 export const getScores = () =>
   API.get("/api/score");
+
+
+
