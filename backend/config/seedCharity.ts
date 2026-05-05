@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import Charity from "../models/CharityDonation.js";
+import Charity from "../models/CharityDonation";
 
 const data = [
   {

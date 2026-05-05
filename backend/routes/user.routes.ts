@@ -1,8 +1,9 @@
 
 import { Router } from "express";
 import { protectedMiddleware } from "../middlewares/authMiddleware";
-import { checkSubscription } from "../middlewares/checkSubscription";
 import { getDashboard, getMe } from "../controllers/userController";
+import { checkSubscription } from "../middlewares/checkSubscription";
+
 
 const router = Router();
 
