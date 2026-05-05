@@ -43,3 +43,10 @@ const AdminScores = () => {
 };
 
 export default AdminScores;
+
+
+
+
+
+
+
