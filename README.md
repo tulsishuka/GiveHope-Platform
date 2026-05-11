@@ -90,7 +90,7 @@ Mobile app version
 👨‍💻 Developer
 ```
 
-Created by: Your Name
+Created by: Tulasi Shukla
 Role: Full Stack Developer (MERN)
 
 📜 License
